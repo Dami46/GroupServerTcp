@@ -13,10 +13,12 @@ namespace TcpServerLibrary
         private int tmpValue = 0;
         public int numberValue;
         private int counter = 0;
+        int score ;
 
         public Game()
         {
             this.numberValue = randomInt();
+            this.score = 100;
         }
 
         private int randomInt()
@@ -25,7 +27,7 @@ namespace TcpServerLibrary
             return random.Next(100);
         }
 
-        public static void guessingGame(NetworkStream stream, MessageReader messageReader, ClientComunicator comunicator)
+        public static void guessingGame(NetworkStream stream, MessageReader messageReader, ClientComunicator comunicator, User user)
         {
             int nextGame = 1;
             Game game = new Game();
@@ -61,10 +63,11 @@ namespace TcpServerLibrary
                     {
                         comunicator.SendMessage(stream, messageReader.getMessage("winningMessage"));
                         Console.WriteLine("Client guessed the number");
+                        user.score = user.score + game.score;
+                        game.score = 100;
 
                         comunicator.SendMessage(stream, messageReader.getMessage("continueMessage"));
-
-                        var continueGame = comunicator.ReadResponse(stream); 
+                        var continueGame = comunicator.ReadResponse(stream);
 
                         nextGame = Int32.Parse(continueGame);
                         if (nextGame == 0)
@@ -77,6 +80,9 @@ namespace TcpServerLibrary
                             Console.WriteLine("Number to guess: " + game.numberValue);
                         }
                     }
+                    game.score = game.score - 3;
+                    Console.WriteLine(game.score);
+                   
                 }
                 catch (Exception ex)
                 {

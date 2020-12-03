@@ -9,38 +9,45 @@ namespace ServerLibrary
 {
     public class UserHandler
     {
-        private readonly string path = "userCredentials";
-        private Dictionary<int, User> userList = new Dictionary<int, User>();
+        private readonly string path = "usersCredentials";
+        private List<User> userList;
+
+        public List<User> UserList { get => userList; set => userList = value; }
 
         public UserHandler() {
             ReadUsersCredentials();
         }
 
-        public Dictionary<int, User> UserList { get => userList; set => userList = value; }
-
         // Sprawdza czy dany user jest na liście, jeśli tak to go dodaje (Whitelista)
         public void AddNewUser(string login, string password, int permission)
         {
             User user = new User(login, password, permission);
-            userList.Add(user.id, user);
+            UserList.Add(user);
             StreamWriter file = File.AppendText("usersCredentials");
-            file.WriteLine("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString());
+            file.WriteLine("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
+            file.Close();
+        }
+
+        public void AddNewUser(User user)
+        {
+            UserList.Add(user);
+            StreamWriter file = File.AppendText("usersCredentials");
+            file.WriteLine("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
             file.Close();
         }
 
         public void ReadUsersCredentials()
         {
             string line;
-            var userList = new Dictionary<int, User>();
+            this.UserList = new List<User>();
             StreamReader file = new StreamReader("usersCredentials");
             while ((line = file.ReadLine()) != null)
             {
                 var cred = line.Split(';');
-                User user = new User(cred[0], cred[1], Int32.Parse(cred[2]));
-                userList.Add(user.id, user);
+                User user = new User(cred[0], cred[1], Int32.Parse(cred[2]), Int32.Parse(cred[3]));
+                UserList.Add(user);
             }
             file.Close();
-            UserList = userList;
         }
 
         // Wyświetlenie na konsoli wszystkich użytkowników 
@@ -49,8 +56,41 @@ namespace ServerLibrary
             Console.WriteLine("Current users: ");
             foreach (var user in UserList)
             {
-                Console.WriteLine("Login: " + user.Value.login + " Password: " + user.Value.password + " Permissions: " + user.Value.permission.ToString());
+                Console.WriteLine("Login: " + user.login + " Password: " + user.password + " Permissions: " + user.permission.ToString() + "Score: " + user.score.ToString());
             }
+        }
+        public StringBuilder ShowUsersRanking()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("Users Ranking: " + "\r\n");
+            foreach (var user in UserList)
+            {
+                stringBuilder.Append("Login: " + user.login + "Score: " + user.score.ToString() + "\r\n");
+            }
+            return stringBuilder;
+        }
+
+        public void SaveUsersList()
+        {
+            File.WriteAllText(path, String.Empty);
+            StreamWriter file = File.AppendText("usersCredentials");
+            foreach (var user in UserList)
+            {
+                file.WriteLine(user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
+            }
+            file.Close();
+        }
+
+        public User GetUser (String login)
+        {  
+            foreach (User user in UserList)
+            {
+                if(login == user.login)
+                {
+                    return user;
+                }
+            }
+            return new User("", "", 0);
         }
 
         //Usuwanie usera z listy 
@@ -58,11 +98,11 @@ namespace ServerLibrary
         {
             using (StreamReader sr = File.OpenText("usersCredentials"))
             {
-                foreach(var us in UserList)
+                foreach(var us in UserList.ToList())
                 {
-                    if(us.Value.login == login)
+                    if(us.login == login)
                     {
-                        userList.Remove(us.Key);
+                        UserList.Remove(us);
                     }
                 }
                 string s;
@@ -82,11 +122,11 @@ namespace ServerLibrary
 
         public bool Login(string login, string password)
         {
-            foreach (var user in userList)
+            foreach (var user in UserList)
             {
-                if (user.Value.login == login)
+                if (user.login == login)
                 {
-                    if (user.Value.password == password)
+                    if (user.password == password)
                     {
                         return true;
                     }

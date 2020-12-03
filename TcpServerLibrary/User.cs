@@ -8,23 +8,23 @@ namespace ServerLibrary
 {
     public class User
     {
-        public int id;
         public string login;
         public string password;
         public int permission;
         public int score;
 
-        public static int idCount = 0;
-
-        public User() { }
-
-        public User(string log, string pas, int per)
+        public User(string login, string password, int permission, int score)
         {
-            this.id = idCount;
-            idCount += 1;
-            this.login = log;
-            this.password = pas;
-            this.permission = per;
+            this.login = login;
+            this.password = password;
+            this.permission = permission;
+            this.score = score;
+        }
+        public User(string login, string password, int permission)
+        {
+            this.login = login;
+            this.password = password;
+            this.permission = permission;
             this.score = 0;
         }
     }

@@ -14,6 +14,7 @@ namespace ServerLibrary
         MessageReader messageReader;
         ClientComunicator comunicator;
         public delegate void TransmissionDataDelegate(NetworkStream stream);
+        public User currentUser;
 
         public AsyncTcpServer(IPAddress IP, int port) : base(IP, port)
         {
@@ -59,7 +60,7 @@ namespace ServerLibrary
                 comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
                 string password = comunicator.ReadResponse(stream);
 
-                comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
+                comunicator.SendMessage(stream, messageReader.getMessage("permissionMessage"));
                 int permission = Int32.Parse(comunicator.ReadResponse(stream));
                 try
                 {
@@ -82,8 +83,6 @@ namespace ServerLibrary
 
             while (true)
             {
-                try
-                {
                     byte[] msg = new byte[256];
 
                     bool go = false;
@@ -99,38 +98,27 @@ namespace ServerLibrary
                     comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
                     string password = comunicator.ReadResponse(stream);
 
-                    Console.WriteLine("|" + login + "|" + password + "|");
-                    userHandler.ShowUsers();
+                    //Console.WriteLine("|" + login + "|" + password + "|");
 
-                    try
+                    if (userHandler.Login(login, password))
                     {
-                        if (userHandler.Login(login, password))
-                        {
+                        currentUser = userHandler.GetUser(login);
+                        comunicator.SendMessage(stream, messageReader.getMessage("welcomeMessage"));
 
-                            comunicator.SendMessage(stream, messageReader.getMessage("welcomeMessage"));
+                        int length = stream.Read(msg, 0, msg.Length);
+                        string result = Encoding.UTF8.GetString(msg).ToUpper();
+                        msg = Encoding.ASCII.GetBytes(result);
+                        stream.Write(msg, 0, length);
 
-                            int length = stream.Read(msg, 0, msg.Length);
-                            string result = Encoding.UTF8.GetString(msg).ToUpper();
-                            msg = Encoding.ASCII.GetBytes(result);
-                            stream.Write(msg, 0, length);
-
-                            Game.guessingGame(stream, messageReader, comunicator);
-
-                        }
-                        else
-                        {
-                            comunicator.SendMessage(stream, messageReader.getMessage("refuseMessage"));
-                        }
+                        Game.guessingGame(stream, messageReader, comunicator, currentUser);
+                        Console.WriteLine(currentUser.score);
+                        userHandler.SaveUsersList();
                     }
-                    catch
+                    else
                     {
                         comunicator.SendMessage(stream, messageReader.getMessage("refuseMessage"));
                     }
-                }
-                catch (IOException)
-                {
-                    break;
-                }
+
             }
         }
     }
