@@ -5,10 +5,11 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using TcpServerLibrary;
 
-namespace TcpServerLibrary
+namespace ServerLibrary
 {
-    class Game
+    public class Game
     {
         private int tmpValue = 0;
         public int numberValue;
@@ -34,8 +35,7 @@ namespace TcpServerLibrary
             Console.WriteLine("Number to guess: " + game.numberValue);
             while (nextGame == 1)
             {
-                try
-                {
+              
                     comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
          
                     var guessedVal = comunicator.ReadResponse(stream);
@@ -83,12 +83,7 @@ namespace TcpServerLibrary
                     game.score = game.score - 3;
                     Console.WriteLine(game.score);
                    
-                }
-                catch (Exception ex)
-                {
-                    nextGame = 0;
-                    Console.WriteLine("Zaden klient nie jest polonczony z serwerem");
-                }
+             
             }
         }
 

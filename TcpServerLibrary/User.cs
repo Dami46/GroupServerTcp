@@ -17,6 +17,10 @@ namespace ServerLibrary
         {
             this.login = login;
             this.password = password;
+            if (permission > 1 || permission < 0)
+            {
+                permission = 1;
+            }
             this.permission = permission;
             this.score = score;
         }
@@ -24,6 +28,10 @@ namespace ServerLibrary
         {
             this.login = login;
             this.password = password;
+            if (permission > 1 || permission < 0)
+            {
+                permission = 1;
+            }
             this.permission = permission;
             this.score = 0;
         }

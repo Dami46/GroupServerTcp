@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TcpServerLibrary
 {
-    class ClientComunicator
+    public class ClientComunicator
     {
         public string ReadResponse(NetworkStream stream)
         {
