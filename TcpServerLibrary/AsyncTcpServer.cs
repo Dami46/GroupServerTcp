@@ -105,11 +105,6 @@ namespace ServerLibrary
                         currentUser = userHandler.GetUser(login);
                         comunicator.SendMessage(stream, messageReader.getMessage("welcomeMessage"));
 
-                        int length = stream.Read(msg, 0, msg.Length);
-                        string result = Encoding.UTF8.GetString(msg).ToUpper();
-                        msg = Encoding.ASCII.GetBytes(result);
-                        stream.Write(msg, 0, length);
-
                         Game.guessingGame(stream, messageReader, comunicator, currentUser);
                         Console.WriteLine(currentUser.score);
                         userHandler.SaveUsersList();

@@ -81,7 +81,6 @@ namespace ServerLibrary
                         }
                     }
                     game.score = game.score - 3;
-                    Console.WriteLine(game.score);
                    
              
             }

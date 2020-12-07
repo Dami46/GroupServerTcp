@@ -24,9 +24,7 @@ namespace ServerLibrary
 
         public string getMessage(string key)
         {
-            string myValue = messages.FirstOrDefault(x => x.Key == key).Value;
-            myValue = myValue + "\r\n";
-            return myValue;
+            return messages.FirstOrDefault(x => x.Key == key).Value;
         }
     }
 }
