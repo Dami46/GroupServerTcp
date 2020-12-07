@@ -72,6 +72,21 @@ namespace ServerLibrary
                     return false;
                 }
             }
+            if (msg == "3")
+            {
+                comunicator.SendMessage(stream, messageReader.getMessage("removeMessage"));
+                string login = comunicator.ReadResponse(stream);
+
+                try
+                {
+                    userHandler.RemoveUser(login);
+                }
+                catch
+                {
+                    comunicator.SendMessage(stream, messageReader.getMessage("noLoginMessage"));
+                    return false;
+                }
+            }
             return true;
         }
 

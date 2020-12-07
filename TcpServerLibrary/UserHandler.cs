@@ -96,27 +96,36 @@ namespace ServerLibrary
         //Usuwanie usera z listy 
         public void RemoveUser(string login)
         {
-            using (StreamReader sr = File.OpenText("usersCredentials"))
+            User user = GetUser(login);
+            if (user.login != "")
             {
-                foreach(var us in UserList.ToList())
-                {
-                    if(us.login == login)
-                    {
-                        UserList.Remove(us);
-                    }
-                }
-                string s;
                 List<string> linesToKeep = new List<string> { };
-                var tempFile = Path.GetTempFileName();
-                while ((s = sr.ReadLine()) != null)
+                using (StreamReader sr = File.OpenText("usersCredentials"))
                 {
-                    string[] credentials_ = s.Split(';');
-                    if (credentials_[0] == login)
+                    foreach (var us in UserList.ToList())
                     {
-                        linesToKeep.Add(s);
+                        if (us.login == login)
+                        {
+                            UserList.Remove(us);
+                        }
+                    }
+                    string s;
+                    linesToKeep = new List<string> { };
+                    var tempFile = Path.GetTempFileName();
+                    while ((s = sr.ReadLine()) != null)
+                    {
+                        string[] credentials_ = s.Split(';');
+                        if (credentials_[0] != login)
+                        {
+                            linesToKeep.Add(s);
+                        }
                     }
                 }
                 File.WriteAllLines("usersCredentials", linesToKeep);
+            }
+            else
+            {
+                throw new Exception();
             }
         }
 
