@@ -33,7 +33,7 @@ namespace ServerLibrary
                 permission = 1;
             }
             this.permission = permission;
-            this.score = 0;
+            score = 0;
         }
     }
 }

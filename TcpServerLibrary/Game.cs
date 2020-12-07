@@ -14,7 +14,7 @@ namespace ServerLibrary
         private int tmpValue = 0;
         public int numberValue;
         private int counter = 0;
-        int score ;
+        int score;
 
         public Game()
         {
@@ -33,96 +33,102 @@ namespace ServerLibrary
             int nextGame = 1;
             Game game = new Game();
             Console.WriteLine("Number to guess: " + game.numberValue);
+            comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
             while (nextGame == 1)
             {
-              
-                    comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
-         
-                    var guessedVal = comunicator.ReadResponse(stream);
 
-                    String time = DateTime.Now.ToString("h:mm:ss");
-                    Console.WriteLine(time + " -> " + guessedVal);
-                    int guessedValInt;
-                    try
+                var guessedVal = comunicator.ReadResponse(stream);
+
+                String time = DateTime.Now.ToString("h:mm:ss");
+                Console.WriteLine(time + " -> " + guessedVal);
+                int guessedValInt;
+                try
+                {
+                    guessedValInt = Int32.Parse(guessedVal);
+                }
+                catch (FormatException)
+                {
+                    guessedValInt = 102;
+                }
+
+                if (guessedValInt > 100 || guessedValInt < 0)
+                {
+                    comunicator.SendMessage(stream, messageReader.getMessage("badValueMessage"));
+                }
+                else if (game.numberValue.Equals(guessedValInt))
+                {
+                    comunicator.SendMessage(stream, messageReader.getMessage("winningMessage"));
+                    Console.WriteLine("Client guessed the number");
+                    user.score = user.score + game.score;
+                    game.score = 100;
+
+                    //comunicator.SendMessage(stream, messageReader.getMessage("continueMessage"));
+                    var continueGame = comunicator.ReadResponse(stream);
+
+                    nextGame = Int32.Parse(continueGame);
+                    if (nextGame == 0)
                     {
-                        guessedValInt = Int32.Parse(guessedVal);
+                        comunicator.SendMessage(stream, messageReader.getMessage("endMessage"));
                     }
-                    catch (FormatException e)
+                    else
                     {
-                        guessedValInt = 102;
+                        game = new Game();
+                        Console.WriteLine("Number to guess: " + game.numberValue);
+                        comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
+
                     }
-                    if (guessedValInt > 100 || guessedValInt < 0)
-                    {
-                        comunicator.SendMessage(stream, messageReader.getMessage("badValueMessage"));
-                    }
+                }
+                else
+                {
 
                     string hotOrNotMessage = game.hotOrNot(guessedValInt);
                     comunicator.SendMessage(stream, hotOrNotMessage);
 
-                    if (game.numberValue.Equals(guessedValInt))
-                    {
-                        comunicator.SendMessage(stream, messageReader.getMessage("winningMessage"));
-                        Console.WriteLine("Client guessed the number");
-                        user.score = user.score + game.score;
-                        game.score = 100;
+                }
 
-                        comunicator.SendMessage(stream, messageReader.getMessage("continueMessage"));
-                        var continueGame = comunicator.ReadResponse(stream);
+                game.score = game.score - 3;
 
-                        nextGame = Int32.Parse(continueGame);
-                        if (nextGame == 0)
-                        {
-                            comunicator.SendMessage(stream, messageReader.getMessage("endMessage"));
-                        }
-                        else
-                        {
-                            game = new Game();
-                            Console.WriteLine("Number to guess: " + game.numberValue);
-                        }
-                    }
-                    game.score = game.score - 3;
-                   
-             
+
             }
         }
 
         public string hotOrNot(int guessedValue)
-        {   
+        {
             string hotOrNot = "";
             if (guessedValue < numberValue + 10 && guessedValue > numberValue - 10)
             {
-                 hotOrNot = " Goroco \r\n";
-                 counter = 0;
+                hotOrNot = " Goroco";
+                counter = 0;
             }
             else if (guessedValue < numberValue + 25 && guessedValue > numberValue - 25)
             {
-                hotOrNot = " Cieplo \r\n";
+                hotOrNot = " Cieplo";
                 if (guessedValue > numberValue && counter == 1)
                 {
                     if (guessedValue - numberValue < tmpValue - numberValue)
                     {
-                        hotOrNot = " Cieplej \r\n";
+                        hotOrNot = " Cieplej";
                     }
                 }
-                else if(guessedValue < numberValue && counter == 1)
+                else if (guessedValue < numberValue && counter == 1)
                 {
                     if (guessedValue - numberValue > tmpValue - numberValue)
                     {
-                        hotOrNot = " Cieplej \r\n";
+                        hotOrNot = " Cieplej";
                     }
                 }
-                    counter = 1;
+                counter = 1;
             }
 
             else if (guessedValue < numberValue + 40 && guessedValue > numberValue - 40)
             {
-                 hotOrNot = " Zimno \r\n";
-                 counter = 0;
+                hotOrNot = " Zimno";
+                counter = 0;
             }
-            else 
+            else
             {
-                 hotOrNot = " Mrozno \r\n";
-                 counter = 0;
+                hotOrNot = " Mrozno";
+                counter = 0;
             }
             tmpValue = guessedValue;
             return hotOrNot;

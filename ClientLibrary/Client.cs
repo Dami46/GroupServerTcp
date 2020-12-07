@@ -41,21 +41,15 @@ namespace ClientLibrary
             client.Connect(ipAddress, port);
             NetworkStream stream = client.GetStream();
 
-            string response = ReadResponse(stream);
-            Console.WriteLine(response);
-            do
-            {
-                string input = Console.ReadLine();
-                SendMessage(stream, input);
-                response = ReadResponse(stream);
-                Console.WriteLine(response);
-            } while (response != " Zalogowano ");
-
-
             while (true)
             {
-                response = ReadResponse(stream);
+                string response = ReadResponse(stream);
                 Console.WriteLine(response);
+                if (response == " Zalogowano " || response == " Nieprawidlowy login lub haslo " )
+                {
+                    response = ReadResponse(stream);
+                    Console.WriteLine(response);
+                }
                 string input = Console.ReadLine();
                 SendMessage(stream, input);
             }
