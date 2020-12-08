@@ -97,7 +97,7 @@ namespace ServerLibrary
         public void RemoveUser(string login)
         {
             User user = GetUser(login);
-            if (user.login != "")
+            if (user.login != "" || user.login != "admin")
             {
                 List<string> linesToKeep = new List<string> { };
                 using (StreamReader sr = File.OpenText("usersCredentials"))
@@ -109,19 +109,9 @@ namespace ServerLibrary
                             UserList.Remove(us);
                         }
                     }
-                    string s;
-                    linesToKeep = new List<string> { };
-                    var tempFile = Path.GetTempFileName();
-                    while ((s = sr.ReadLine()) != null)
-                    {
-                        string[] credentials_ = s.Split(';');
-                        if (credentials_[0] != login)
-                        {
-                            linesToKeep.Add(s);
-                        }
-                    }
+
                 }
-                File.WriteAllLines("usersCredentials", linesToKeep);
+                SaveUsersList();
             }
             else
             {

@@ -15,17 +15,15 @@ namespace TcpServerLibrary
             do
             {
                 stream.Read(response, 0, response.Length);
-            } while (Encoding.UTF8.GetString(response).Replace("\0", "") == "\r\n");
-            return Encoding.UTF8.GetString(response).Replace("\0", "");
+            } while (Encoding.UTF8.GetString(response).Replace("\0", "") == "\r\n" || Encoding.UTF8.GetString(response).Replace("\0", "") == "\n");
+            return Encoding.UTF8.GetString(response).Replace("\0", "").Replace("\n", "");
         }
 
         public void SendMessage(NetworkStream stream, string message)
         {
-            byte[] messageBytes = new ASCIIEncoding().GetBytes(message);
+            byte[] messageBytes = new ASCIIEncoding().GetBytes(message + "\r\n");
             stream.Write(messageBytes, 0, messageBytes.Length);
         }
-
-    
     }
 
 }
