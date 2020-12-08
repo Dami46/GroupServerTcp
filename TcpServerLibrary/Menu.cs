@@ -112,6 +112,11 @@ namespace TcpServerLibrary
             userHandler.SaveUsersList();
         }
 
+        private void ReadUserList(NetworkStream stream)
+        {
+            comunicator.SendMessage(stream, userHandler.ShowUsersRanking().ToString());
+        }
+
         public void UserMenu(NetworkStream stream)
         {
             comunicator.SendMessage(stream, messageReader.getMessage("userMenu"));
@@ -124,6 +129,11 @@ namespace TcpServerLibrary
                         break;
                     }
                 case "2":
+                    {
+                        ReadUserList(stream);
+                        break;
+                    }
+                case "3":
                     {
                         Continue_session = false;
                         break;
@@ -154,6 +164,11 @@ namespace TcpServerLibrary
                         break;
                     }
                 case "4":
+                    {
+                        ReadUserList(stream);
+                        break;
+                    }
+                case "5":
                     {
                         Continue_session = false;
                         break;
