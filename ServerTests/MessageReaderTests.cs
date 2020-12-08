@@ -9,9 +9,12 @@ using System.Threading.Tasks;
 
 namespace ServerLibrary.Tests
 {
+
     [TestClass()]
     public class MessageReaderTests
-    {
+    {   
+         MessageReader messageReader = new MessageReader();
+
         [TestMethod()]
         public void MessageReaderTest()
         {
@@ -28,7 +31,6 @@ namespace ServerLibrary.Tests
         [TestMethod()]
         public void getMessageTest()
         {
-            MessageReader messageReader = new MessageReader();
             try
             {
                 messageReader.getMessage("guessMessage");
@@ -44,8 +46,7 @@ namespace ServerLibrary.Tests
         [TestMethod()]
         public void getMessageTest2()
         {
-            MessageReader messageReader = new MessageReader();
-            String value = messageReader.getMessage("guessMessage");
+            String value = messageReader.getMessage("loginMessage");
             String key = "Podaj login:";
             value.Contains(key);
             Assert.IsNotNull(value);

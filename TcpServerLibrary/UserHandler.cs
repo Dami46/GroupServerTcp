@@ -24,7 +24,7 @@ namespace ServerLibrary
             User user = new User(login, password, permission);
             UserList.Add(user);
             StreamWriter file = File.AppendText("usersCredentials");
-            file.Write(user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
+            file.Write( "\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
             file.Close();
         }
 
@@ -32,7 +32,7 @@ namespace ServerLibrary
         {
             UserList.Add(user);
             StreamWriter file = File.AppendText("usersCredentials");
-            file.Write(user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
+            file.Write("\r\n" +  user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
             file.Close();
         }
 

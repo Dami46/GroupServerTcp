@@ -12,17 +12,18 @@ namespace ServerLibrary.Tests
     [TestClass()]
     public class UserHandlerTests
     {
+
+        UserHandler userHandler = new UserHandler();
+
         [TestMethod()]
         public void UserHandlerTest()
         {
             try
             {
-                UserHandler userHandler = new UserHandler(); 
                 User user = userHandler.UserList.First();
                 Assert.AreEqual(user.login, "admin");
                 Assert.AreEqual(user.password,"admin");
                 Assert.AreEqual(user.permission,0);
-
             }
             catch (AssertFailedException)
             {
@@ -36,7 +37,6 @@ namespace ServerLibrary.Tests
         {
             try
             {
-                UserHandler userHandler = new UserHandler();
                 userHandler.AddNewUser(new User("adduser", "withlogin", 1));
             }
             catch (AssertFailedException)
@@ -48,7 +48,6 @@ namespace ServerLibrary.Tests
         [TestMethod()]
         public void AddNewUserTest1()
         {
-            UserHandler userHandler = new UserHandler();
             userHandler.AddNewUser("adduser", "withuser", 1);
         }
 
@@ -68,14 +67,12 @@ namespace ServerLibrary.Tests
         [TestMethod()]
         public void ShowUsersTest()
         {
-            UserHandler userHandler = new UserHandler();
             CollectionAssert.AllItemsAreNotNull(userHandler.UserList);
         }
 
         [TestMethod()]
         public void ShowUsersRankingTest()
         {
-            UserHandler userHandler = new UserHandler();
             StringBuilder stringBuilder = userHandler.ShowUsersRanking();
             Assert.IsNotNull(stringBuilder);
         }
@@ -83,7 +80,6 @@ namespace ServerLibrary.Tests
         [TestMethod()]
         public void GetUserTest()
         {
-            UserHandler userHandler = new UserHandler();
             User user = new User("admin", "admin", 0);
             User user2 = userHandler.GetUser("admin");
             Assert.ReferenceEquals(user, user2);
@@ -93,7 +89,6 @@ namespace ServerLibrary.Tests
         [TestMethod()]
         public void LoginTest()
         {
-            UserHandler userHandler = new UserHandler();
             bool result = userHandler.Login("admin", "admin");
             Assert.IsTrue(result);
         }

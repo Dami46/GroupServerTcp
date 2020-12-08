@@ -12,11 +12,12 @@ namespace ServerLibrary
         public static Dictionary<string, string> messages = new Dictionary<string, string>();
         public MessageReader()
         {
+            messages.Clear();
             string line;
             StreamReader file = new StreamReader("Messages.conf");
 
             while ((line = file.ReadLine()) != null)
-            {
+            {   
                 var cred = line.Split('=');
                 messages.Add(cred[0], cred[1]);
             }
