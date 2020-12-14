@@ -78,6 +78,11 @@ namespace TcpServerLibrary
 
             comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
             string password = comunicator.ReadResponse(stream);
+            while (!CheckPassword(password))
+            {
+                comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
+                password = comunicator.ReadResponse(stream);
+            }
 
             comunicator.SendMessage(stream, messageReader.getMessage("permissionMessage"));
             int permission = Int32.Parse(comunicator.ReadResponse(stream));
@@ -89,6 +94,35 @@ namespace TcpServerLibrary
             {
                 comunicator.SendMessage(stream, messageReader.getMessage("wrongLoginMessage"));
             }
+        }
+
+        private static bool CheckPassword(string password)
+        {
+            if (password.Length < 6 || password.Length > 20)
+            {
+                return false;
+            }
+           
+            if (password.Contains(" "))
+            {
+                return false;
+            }
+
+            if (!password.Any(char.IsUpper))
+            {
+                return false;
+            }
+
+            if (!password.Any(char.IsLower))
+            {
+                return false;
+            }
+
+            if (!password.Any(char.IsNumber))
+            {
+                return false;
+            }
+            return true;
         }
 
         private void RemoveUser(NetworkStream stream)
@@ -117,6 +151,20 @@ namespace TcpServerLibrary
             comunicator.SendMessage(stream, userHandler.ShowUsersRanking().ToString());
         }
 
+        private void ChangePassword(NetworkStream stream)
+        {
+            LoginUser(stream);
+            comunicator.SendMessage(stream, messageReader.getMessage("newPasswordMessage"));
+            string password = comunicator.ReadResponse(stream);
+            while (!CheckPassword(password))
+            {
+                comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
+                password = comunicator.ReadResponse(stream);
+            }
+            userHandler.RemoveUser(loggedUser.login);
+            userHandler.AddNewUser(loggedUser.login, password, 1);
+        }
+
         public void UserMenu(NetworkStream stream)
         {
             comunicator.SendMessage(stream, messageReader.getMessage("userMenu"));
@@ -134,6 +182,11 @@ namespace TcpServerLibrary
                         break;
                     }
                 case "3":
+                    {
+                        ChangePassword(stream);
+                        break;
+                    }
+                case "4":
                     {
                         Continue_session = false;
                         break;
