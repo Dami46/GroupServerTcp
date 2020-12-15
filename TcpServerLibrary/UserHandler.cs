@@ -14,7 +14,8 @@ namespace ServerLibrary
 
         public List<User> UserList { get => userList; set => userList = value; }
 
-        public UserHandler() {
+        public UserHandler()
+        {
             ReadUsersCredentials();
         }
 
@@ -24,7 +25,7 @@ namespace ServerLibrary
             User user = new User(login, password, permission);
             UserList.Add(user);
             StreamWriter file = File.AppendText("usersCredentials");
-            file.Write( "\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
+            file.Write("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
             file.Close();
         }
 
@@ -32,7 +33,7 @@ namespace ServerLibrary
         {
             UserList.Add(user);
             StreamWriter file = File.AppendText("usersCredentials");
-            file.Write("\r\n" +  user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
+            file.Write("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
             file.Close();
         }
 
@@ -63,12 +64,15 @@ namespace ServerLibrary
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("Users Ranking: " + "\r\n");
-            foreach (var user in UserList)
+            List<User> SortedList = UserList.OrderBy(u => u.score).Reverse().Take(10).ToList();
+
+            foreach (var user in SortedList)
             {
                 stringBuilder.Append("Login: " + user.login + "Score: " + user.score.ToString() + "\r\n");
             }
             return stringBuilder;
         }
+
 
         public void SaveUsersList()
         {
@@ -81,11 +85,11 @@ namespace ServerLibrary
             file.Close();
         }
 
-        public User GetUser (String login)
-        {  
+        public User GetUser(String login)
+        {
             foreach (User user in UserList)
             {
-                if(login == user.login)
+                if (login == user.login)
                 {
                     return user;
                 }
