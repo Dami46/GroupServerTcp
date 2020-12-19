@@ -39,6 +39,7 @@ namespace ClientLibrary
         {
             TcpClient client = new TcpClient();
             client.Connect(ipAddress, port);
+            // tu otworzyć okno
             NetworkStream stream = client.GetStream();
 
             while (true)

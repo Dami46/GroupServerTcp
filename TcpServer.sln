@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1259
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpServer", "TcpServer\TcpServer.csproj", "{E52F53EE-FFEA-41AC-A09B-9C2C7FA34A48}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{EE9BE65C-4D57-451B-951E-67EE512BE2FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientLibrary", "ClientLibrary\ClientLibrary.csproj", "{8F921F02-D8CE-41A1-8FCA-0C019902B9D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientGui", "ClientGui\ClientGui.csproj", "{BDAD44AE-FAE3-4E16-8ADE-5E547A6F4ADD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,12 @@ Global
 		{8F921F02-D8CE-41A1-8FCA-0C019902B9D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F921F02-D8CE-41A1-8FCA-0C019902B9D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F921F02-D8CE-41A1-8FCA-0C019902B9D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDAD44AE-FAE3-4E16-8ADE-5E547A6F4ADD}.Both|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDAD44AE-FAE3-4E16-8ADE-5E547A6F4ADD}.Both|Any CPU.Build.0 = Debug|Any CPU
+		{BDAD44AE-FAE3-4E16-8ADE-5E547A6F4ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDAD44AE-FAE3-4E16-8ADE-5E547A6F4ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDAD44AE-FAE3-4E16-8ADE-5E547A6F4ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDAD44AE-FAE3-4E16-8ADE-5E547A6F4ADD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
