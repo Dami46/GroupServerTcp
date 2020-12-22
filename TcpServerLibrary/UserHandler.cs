@@ -101,7 +101,7 @@ namespace ServerLibrary
         public void RemoveUser(string login)
         {
             User user = GetUser(login);
-            if (user.login != "" || user.login != "admin")
+            if (user.login != "" && user.login != "admin")
             {
                 List<string> linesToKeep = new List<string> { };
                 using (StreamReader sr = File.OpenText("usersCredentials"))
