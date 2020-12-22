@@ -12,33 +12,19 @@ namespace TcpServerLibrary
         public string ReadResponse(NetworkStream stream)
         {
             byte[] response = new byte[256];
-
-            try
+            do
             {
-                do
-                {
-                    stream.Read(response, 0, response.Length);
+                stream.Read(response, 0, response.Length);
 
-                } while (Encoding.UTF8.GetString(response).Replace("\0", "") == "\r\n" || Encoding.UTF8.GetString(response).Replace("\0", "") == "\n");
-            }
-            catch
-            {
+            } while (Encoding.UTF8.GetString(response).Replace("\0", "") == "\r\n" || Encoding.UTF8.GetString(response).Replace("\0", "") == "\n");
 
-            }
             return Encoding.UTF8.GetString(response).Replace("\0", "").Replace("\n", "");
         }
 
         public void SendMessage(NetworkStream stream, string message)
         {
             byte[] messageBytes = new ASCIIEncoding().GetBytes(message);
-            try
-            {
-                stream.Write(messageBytes, 0, messageBytes.Length);
-            }
-            catch
-            {
-
-            }
+            stream.Write(messageBytes, 0, messageBytes.Length);
         }
     }
 

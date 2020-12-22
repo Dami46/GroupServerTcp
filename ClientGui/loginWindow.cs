@@ -28,7 +28,7 @@ namespace ClientGui
         private void registerButton_Click(object sender, EventArgs e)
         {
             Hide();
-            RegisterWindow registerWindow = new RegisterWindow();
+            RegisterWindow registerWindow = new RegisterWindow(client, 2);
             registerWindow.ShowDialog();
         }
 
@@ -43,7 +43,6 @@ namespace ClientGui
                 String credentials = textBoxName.Text + ";" + textBoxPass.Text;
                 comunicator.SendMessage(stream, credentials);
                 var response = comunicator.ReadResponse(stream);
-                comunicator.SendMessage(stream, "NONE");
                 if (response.Equals("DEC"))
                 {
                     responseLabel.ForeColor = Color.Red;
@@ -55,13 +54,13 @@ namespace ClientGui
                     if (response.Equals("ADM"))
                     {
                         Hide();
-                        InteractionAdminWindow adminWindow = new InteractionAdminWindow(client);
+                        InteractionAdminWindow adminWindow = new InteractionAdminWindow(client,0);
                         adminWindow.ShowDialog();
                     }
                     else
                     {
                         Hide();
-                        InteractionWindow userWindow = new InteractionWindow(client);
+                        InteractionWindow userWindow = new InteractionWindow(client,1);
                         userWindow.ShowDialog();
                     }
                 }

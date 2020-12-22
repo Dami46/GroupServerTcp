@@ -37,26 +37,6 @@ namespace TcpServerLibrary
             } while (Continue_session == true);
         }
 
-        //nowa funkcja do gui
-        public bool WhichMenu(NetworkStream stream)
-        {
-            if (loggedUser.permission == 0)
-            {
-                
-                AdminMenu(stream);
-                return false;
-
-            }
-            else if (loggedUser.permission == 1)
-            {
-                
-                UserMenu(stream);
-                return true;
-            }
-
-            return false;
-        }
-
         public bool LoginMenu(NetworkStream stream)
         {
             //comunicator.SendMessage(stream, messageReader.getMessage("loginMenu"));

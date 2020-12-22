@@ -48,7 +48,7 @@ namespace ClientLibrary
             {
                 string response = ReadResponse(stream);
                 Console.WriteLine(response);
-                if (response == " Zalogowano " || response == " Nieprawidlowy login lub haslo " )
+                if (response == " Zalogowano " || response == " Nieprawidlowy login lub haslo ")
                 {
                     response = ReadResponse(stream);
                     Console.WriteLine(response);

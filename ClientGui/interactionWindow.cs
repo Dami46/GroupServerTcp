@@ -17,24 +17,26 @@ namespace ClientGui
         TcpClient client;
         NetworkStream stream;
         ClientComunicator comunicator = new ClientComunicator();
-        public InteractionWindow(TcpClient client)
+        int permision;
+        public InteractionWindow(TcpClient client, int permision)
         {
             InitializeComponent();
             stream = client.GetStream();
             this.client = client;
+            this.permision = permision;
         }
 
         private void rankingButton_Click(object sender, EventArgs e)
         {
             Hide();
-            RankingWindow rankingWindow = new RankingWindow();
+            RankingWindow rankingWindow = new RankingWindow(client, permision);
             rankingWindow.ShowDialog();
         }
 
         private void changeButton_Click(object sender, EventArgs e)
         {
             Hide();
-            ChangePasswordWindow changePassword = new ChangePasswordWindow();
+            ChangePasswordWindow changePassword = new ChangePasswordWindow(client,permision);
             changePassword.ShowDialog();
         }
 
@@ -42,7 +44,7 @@ namespace ClientGui
         private void beginButton_Click(object sender, EventArgs e)
         {
             Hide();
-            GameWindow gameWindow = new GameWindow();
+            GameWindow gameWindow = new GameWindow(client, permision);
             gameWindow.ShowDialog();
         }
 

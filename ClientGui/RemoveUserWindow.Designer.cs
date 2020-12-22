@@ -42,7 +42,6 @@
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(128, 20);
             this.textBoxName.TabIndex = 8;
-            this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
             // 
             // label1
             // 
@@ -62,6 +61,7 @@
             this.backButton.TabIndex = 11;
             this.backButton.Text = "Back";
             this.backButton.UseVisualStyleBackColor = true;
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
             // 
             // removeButton
             // 
@@ -72,6 +72,7 @@
             this.removeButton.TabIndex = 12;
             this.removeButton.Text = "Remove";
             this.removeButton.UseVisualStyleBackColor = true;
+            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
             // 
             // label2
             // 
@@ -87,7 +88,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(455, 312);
+            this.ClientSize = new System.Drawing.Size(442, 266);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.removeButton);
             this.Controls.Add(this.backButton);

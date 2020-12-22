@@ -33,7 +33,7 @@ namespace ServerLibrary
             int nextGame = 1;
             Game game = new Game();
             Console.WriteLine("Number to guess: " + game.numberValue);
-            comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
+           // comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
             while (nextGame == 1)
             {
 
@@ -51,7 +51,7 @@ namespace ServerLibrary
                     guessedValInt = 102;
                 }
 
-                if (guessedValInt > 100 || guessedValInt < 0)
+                if ((guessedValInt > 100 || guessedValInt < 0) && guessedValInt != 10001)
                 {
                     comunicator.SendMessage(stream, messageReader.getMessage("badValueMessage"));
                 }
@@ -78,6 +78,10 @@ namespace ServerLibrary
 
                     }
                 }
+                else if (guessedValInt == 10001)
+                {
+                    nextGame = 0;
+                }
                 else
                 {
 
@@ -87,7 +91,6 @@ namespace ServerLibrary
                 }
 
                 game.score = game.score - 3;
-
 
             }
         }
