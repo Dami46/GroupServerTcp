@@ -4,17 +4,64 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TcpServerLibrary;
 
 namespace ClientGui
 {
-    public partial class interactionAdminWindow : Form
+    public partial class InteractionAdminWindow : Form
     {
-        public interactionAdminWindow()
+        TcpClient client;
+        NetworkStream stream;
+        ClientComunicator comunicator = new ClientComunicator();
+
+        public InteractionAdminWindow(TcpClient client)
         {
             InitializeComponent();
+            stream = client.GetStream();
+            this.client = client;
         }
+
+        private void registerButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            RegisterWindow registerWindow = new RegisterWindow();
+            registerWindow.ShowDialog();
+        }
+
+
+        private void beginButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            GameWindow gameWindow = new GameWindow();
+            gameWindow.ShowDialog();
+        }
+
+        private void remButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            RemoveUserWindow removeUser = new RemoveUserWindow();
+            removeUser.ShowDialog();
+        }
+
+        private void rankingButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            RankingWindow rankingWindow = new RankingWindow();
+            rankingWindow.ShowDialog();
+        }
+
+        private void logoutButton_Click(object sender, EventArgs e)
+        {
+            comunicator.SendMessage(stream, "DIS");
+            Hide();
+            LoginWindow loginWindow = new LoginWindow(client);
+            loginWindow.ShowDialog();
+        }
+
+
     }
 }

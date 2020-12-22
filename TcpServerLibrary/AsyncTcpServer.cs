@@ -41,7 +41,7 @@ namespace ServerLibrary
 
         protected override void BeginDataTransmission(NetworkStream stream)
         {
-            Menu menu = new Menu();
+            TcpMenu menu = new TcpMenu();
             while (true)
             {
                 while (menu.LoginMenu(stream))

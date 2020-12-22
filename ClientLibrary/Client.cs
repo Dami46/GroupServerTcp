@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientGui;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -39,7 +40,8 @@ namespace ClientLibrary
         {
             TcpClient client = new TcpClient();
             client.Connect(ipAddress, port);
-            // tu otworzyć okno
+            LoginWindow loginWindow = new LoginWindow(client);
+            loginWindow.ShowDialog();
             NetworkStream stream = client.GetStream();
 
             while (true)

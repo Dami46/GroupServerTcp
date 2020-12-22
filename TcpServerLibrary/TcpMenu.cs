@@ -8,7 +8,7 @@ using ServerLibrary;
 
 namespace TcpServerLibrary
 {
-    class Menu
+    public class TcpMenu
     {
         protected User loggedUser;
         private static UserHandler userHandler = new UserHandler();
@@ -26,18 +26,40 @@ namespace TcpServerLibrary
             {
                 if (loggedUser.permission == 0)
                 {
+                    comunicator.SendMessage(stream, "ADM");
                     AdminMenu(stream);
                 }
                 else if (loggedUser.permission == 1)
                 {
+                    comunicator.SendMessage(stream, "USR");
                     UserMenu(stream);
                 }
             } while (Continue_session == true);
         }
 
+        //nowa funkcja do gui
+        public bool WhichMenu(NetworkStream stream)
+        {
+            if (loggedUser.permission == 0)
+            {
+                
+                AdminMenu(stream);
+                return false;
+
+            }
+            else if (loggedUser.permission == 1)
+            {
+                
+                UserMenu(stream);
+                return true;
+            }
+
+            return false;
+        }
+
         public bool LoginMenu(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("loginMenu"));
+            //comunicator.SendMessage(stream, messageReader.getMessage("loginMenu"));
             var msg = comunicator.ReadResponse(stream);
             switch (msg)
             {
@@ -57,19 +79,25 @@ namespace TcpServerLibrary
 
         private bool LoginUser(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
-            string login = comunicator.ReadResponse(stream);
-
-            comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
-            string password = comunicator.ReadResponse(stream);
+            // comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
+            var credentials = comunicator.ReadResponse(stream);
+            var credits = credentials.Split(';');
+            string login = credits[0];
+            //comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
+            string password = credits[1];
             if (userHandler.Login(login, password))
             {
                 loggedUser = userHandler.GetUser(login);
+                comunicator.SendMessage(stream, "ACK");
                 return true;
             }
             else
+            {
+                comunicator.SendMessage(stream, "DEC");
                 return false;
+            }
         }
+
 
         private void RegiserUser(NetworkStream stream)
         {
@@ -102,7 +130,7 @@ namespace TcpServerLibrary
             {
                 return false;
             }
-           
+
             if (password.Contains(" "))
             {
                 return false;
@@ -167,7 +195,7 @@ namespace TcpServerLibrary
 
         public void UserMenu(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("userMenu"));
+            //comunicator.SendMessage(stream, messageReader.getMessage("userMenu"));
             var msg = comunicator.ReadResponse(stream);
             switch (msg)
             {
@@ -197,7 +225,7 @@ namespace TcpServerLibrary
 
         public void AdminMenu(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("adminMenu"));
+            //comunicator.SendMessage(stream, messageReader.getMessage("adminMenu"));
             var msg = comunicator.ReadResponse(stream);
             switch (msg)
             {

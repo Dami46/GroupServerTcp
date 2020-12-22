@@ -1,6 +1,6 @@
 ﻿namespace ClientGui
 {
-    partial class interactionAdminWindow
+    partial class InteractionAdminWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -34,7 +34,6 @@
             this.remButton = new System.Windows.Forms.Button();
             this.registerButton = new System.Windows.Forms.Button();
             this.beginButton = new System.Windows.Forms.Button();
-            this.choiceButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,74 +44,76 @@
             this.panel1.Controls.Add(this.remButton);
             this.panel1.Controls.Add(this.registerButton);
             this.panel1.Controls.Add(this.beginButton);
-            this.panel1.Location = new System.Drawing.Point(287, 100);
+            this.panel1.Location = new System.Drawing.Point(215, 81);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(227, 202);
+            this.panel1.Size = new System.Drawing.Size(170, 164);
             this.panel1.TabIndex = 4;
             // 
             // logoutButton
             // 
-            this.logoutButton.Location = new System.Drawing.Point(0, 167);
+            this.logoutButton.Location = new System.Drawing.Point(0, 136);
+            this.logoutButton.Margin = new System.Windows.Forms.Padding(2);
             this.logoutButton.Name = "logoutButton";
-            this.logoutButton.Size = new System.Drawing.Size(227, 36);
+            this.logoutButton.Size = new System.Drawing.Size(170, 29);
             this.logoutButton.TabIndex = 4;
             this.logoutButton.Text = "Log out";
             this.logoutButton.UseVisualStyleBackColor = true;
+            this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
             // 
             // rankingButton
             // 
-            this.rankingButton.Location = new System.Drawing.Point(0, 127);
+            this.rankingButton.Location = new System.Drawing.Point(0, 103);
+            this.rankingButton.Margin = new System.Windows.Forms.Padding(2);
             this.rankingButton.Name = "rankingButton";
-            this.rankingButton.Size = new System.Drawing.Size(227, 36);
+            this.rankingButton.Size = new System.Drawing.Size(170, 29);
             this.rankingButton.TabIndex = 3;
             this.rankingButton.Text = "Show Ranking";
             this.rankingButton.UseVisualStyleBackColor = true;
+            this.rankingButton.Click += new System.EventHandler(this.rankingButton_Click);
             // 
             // remButton
             // 
-            this.remButton.Location = new System.Drawing.Point(0, 85);
+            this.remButton.Location = new System.Drawing.Point(0, 69);
+            this.remButton.Margin = new System.Windows.Forms.Padding(2);
             this.remButton.Name = "remButton";
-            this.remButton.Size = new System.Drawing.Size(227, 36);
+            this.remButton.Size = new System.Drawing.Size(170, 29);
             this.remButton.TabIndex = 2;
-            this.remButton.Text = "Remove Button";
+            this.remButton.Text = "Remove User";
             this.remButton.UseVisualStyleBackColor = true;
+            this.remButton.Click += new System.EventHandler(this.remButton_Click);
             // 
             // registerButton
             // 
-            this.registerButton.Location = new System.Drawing.Point(0, 42);
+            this.registerButton.Location = new System.Drawing.Point(0, 34);
+            this.registerButton.Margin = new System.Windows.Forms.Padding(2);
             this.registerButton.Name = "registerButton";
-            this.registerButton.Size = new System.Drawing.Size(227, 36);
+            this.registerButton.Size = new System.Drawing.Size(170, 29);
             this.registerButton.TabIndex = 1;
-            this.registerButton.Text = "Register Button";
+            this.registerButton.Text = "Register User";
             this.registerButton.UseVisualStyleBackColor = true;
+            this.registerButton.Click += new System.EventHandler(this.registerButton_Click);
             // 
             // beginButton
             // 
             this.beginButton.Location = new System.Drawing.Point(0, 0);
+            this.beginButton.Margin = new System.Windows.Forms.Padding(2);
             this.beginButton.Name = "beginButton";
-            this.beginButton.Size = new System.Drawing.Size(227, 36);
+            this.beginButton.Size = new System.Drawing.Size(170, 29);
             this.beginButton.TabIndex = 0;
             this.beginButton.Text = "Begin Game";
             this.beginButton.UseVisualStyleBackColor = true;
+            this.beginButton.Click += new System.EventHandler(this.beginButton_Click);
             // 
-            // choiceButton
+            // InteractionAdminWindow
             // 
-            this.choiceButton.Location = new System.Drawing.Point(364, 328);
-            this.choiceButton.Name = "choiceButton";
-            this.choiceButton.Size = new System.Drawing.Size(75, 23);
-            this.choiceButton.TabIndex = 3;
-            this.choiceButton.Text = "Confirm";
-            this.choiceButton.UseVisualStyleBackColor = true;
-            // 
-            // interactionAdminWindow
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.choiceButton);
-            this.Name = "interactionAdminWindow";
-            this.Text = "interactionAdminWindow";
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "InteractionAdminWindow";
+            this.Text = "Admin Window";
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -126,6 +127,5 @@
         private System.Windows.Forms.Button remButton;
         private System.Windows.Forms.Button registerButton;
         private System.Windows.Forms.Button beginButton;
-        private System.Windows.Forms.Button choiceButton;
     }
 }
