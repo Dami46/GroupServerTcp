@@ -19,22 +19,38 @@ namespace ServerLibrary
             ReadUsersCredentials();
         }
 
-        // Sprawdza czy dany user jest na liście, jeśli tak to go dodaje (Whitelista)
+        // Sprawdza czy dany user jest na liście, jeśli nie to go dodaje (Whitelista)
         public void AddNewUser(string login, string password, int permission)
         {
-            User user = new User(login, password, permission);
-            UserList.Add(user);
-            StreamWriter file = File.AppendText("usersCredentials");
-            file.Write("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
-            file.Close();
+            bool containsItem = UserList.Any(listUser => listUser.login == login);
+            if (!containsItem)
+            {
+                User user = new User(login, password, permission);
+                UserList.Add(user);
+                StreamWriter file = File.AppendText("usersCredentials");
+                file.Write("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
+                file.Close();
+            }
+            else
+            {
+                throw new Exception();
+            }
         }
 
         public void AddNewUser(User user)
         {
-            UserList.Add(user);
-            StreamWriter file = File.AppendText("usersCredentials");
-            file.Write("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
-            file.Close();
+            bool containsItem = UserList.Any(listUser => listUser.login == user.login);
+            if (!containsItem)
+            {
+                UserList.Add(user);
+                StreamWriter file = File.AppendText("usersCredentials");
+                file.Write("\r\n" + user.login + ";" + user.password + ";" + user.permission.ToString() + ";" + user.score.ToString());
+                file.Close();
+            }
+            else
+            {
+                throw new Exception();
+            }
         }
 
         public void ReadUsersCredentials()
@@ -60,6 +76,7 @@ namespace ServerLibrary
                 Console.WriteLine("Login: " + user.login + " Password: " + user.password + " Permissions: " + user.permission.ToString() + "Score: " + user.score.ToString());
             }
         }
+
         public StringBuilder ShowUsersRanking()
         {
             StringBuilder stringBuilder = new StringBuilder();

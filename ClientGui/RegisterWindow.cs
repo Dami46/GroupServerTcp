@@ -21,18 +21,37 @@ namespace ClientGui
         public RegisterWindow(TcpClient client, int permision)
         {
             InitializeComponent();
+            stream = client.GetStream();
             this.client = client;
             this.permision = permision;
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void registerButton_Click(object sender, EventArgs e)
         {
+            if (textBoxName.Text.Length != 0 || textBoxPass.Text.Length != 0)
+            {
+                comunicator.SendMessage(stream, "2");
+                int permit = 1;
+                if (checkBox1.Checked)
+                {
+                    permit = 0;
+                }
 
-        }
+                String credentials = textBoxName.Text + ";" + textBoxPass.Text + ";" + permit;
+                comunicator.SendMessage(stream, credentials);
+                var response = comunicator.ReadResponse(stream);
+                if (!response.Equals("ACK"))
+                {
+                    responseLabel.ForeColor = Color.Red;
+                    responseLabel.Text = response;
+                }
+                else
+                {
+                    responseLabel.ForeColor = Color.Green;
+                    responseLabel.Text = "Successfully registered";
+                }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
+            }
         }
 
         private void backButton_Click(object sender, EventArgs e)
@@ -43,12 +62,20 @@ namespace ClientGui
                 InteractionAdminWindow adminWindow = new InteractionAdminWindow(client, permision);
                 adminWindow.ShowDialog();
             }
-            else
+            else if (permision == 1)
             {
                 Hide();
                 InteractionWindow userWindow = new InteractionWindow(client, permision);
                 userWindow.ShowDialog();
             }
+            else
+            {
+                Hide();
+                comunicator.SendMessage(stream, "BCK");
+                LoginWindow loginWindow = new LoginWindow(client);
+                loginWindow.ShowDialog();
+            }
         }
+
     }
 }

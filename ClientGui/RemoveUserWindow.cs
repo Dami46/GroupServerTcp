@@ -21,8 +21,10 @@ namespace ClientGui
         public RemoveUserWindow(TcpClient client, int permision)
         {
             InitializeComponent();
+            stream = client.GetStream();
             this.client = client;
             this.permision = permision;
+            comunicator.SendMessage(stream, "3");
         }
 
         private void backButton_Click(object sender, EventArgs e)
@@ -35,7 +37,20 @@ namespace ClientGui
         private void removeButton_Click(object sender, EventArgs e)
         {
             String login = textBoxName.Text;
+            comunicator.SendMessage(stream, login);
 
+            var respone = comunicator.ReadResponse(stream);
+            if (!respone.Equals("ACK"))
+            {
+                responseLabel.ForeColor = Color.Red;
+                responseLabel.Text = respone;
+            }
+            else
+            {
+                responseLabel.ForeColor = Color.Green;
+                responseLabel.Text = "Successfully deleted";
+            }
+            
         }
     }
 }

@@ -33,6 +33,7 @@
             this.backButton = new System.Windows.Forms.Button();
             this.removeButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.responseLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxName
@@ -84,11 +85,21 @@
             this.label2.TabIndex = 13;
             this.label2.Text = "Write user login to remove";
             // 
+            // responseLabel
+            // 
+            this.responseLabel.AutoSize = true;
+            this.responseLabel.Location = new System.Drawing.Point(136, 134);
+            this.responseLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.responseLabel.Name = "responseLabel";
+            this.responseLabel.Size = new System.Drawing.Size(0, 15);
+            this.responseLabel.TabIndex = 14;
+            // 
             // RemoveUserWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(442, 266);
+            this.Controls.Add(this.responseLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.removeButton);
             this.Controls.Add(this.backButton);
@@ -108,5 +119,6 @@
         private System.Windows.Forms.Button backButton;
         private System.Windows.Forms.Button removeButton;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label responseLabel;
     }
 }

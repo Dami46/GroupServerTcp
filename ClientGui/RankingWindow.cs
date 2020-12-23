@@ -42,8 +42,14 @@ namespace ClientGui
             if (permision == 0)
             {
                 Hide();
-                InteractionAdminWindow adminWindow = new InteractionAdminWindow(client, 0);
+                InteractionAdminWindow adminWindow = new InteractionAdminWindow(client, permision);
                 adminWindow.ShowDialog();
+            }
+            else if (permision == 1)
+            {
+                Hide();
+                InteractionWindow interaction = new InteractionWindow(client, permision);
+                interaction.ShowDialog();
             }
             else
             {
@@ -52,6 +58,5 @@ namespace ClientGui
                 loginWindow.ShowDialog();
             }
         }
-
     }
 }

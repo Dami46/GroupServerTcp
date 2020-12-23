@@ -81,22 +81,39 @@ namespace TcpServerLibrary
 
         private void RegiserUser(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
-            string login = comunicator.ReadResponse(stream);
+            //comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
+            var credentials = comunicator.ReadResponse(stream);
+          
+            var credits = credentials.Split(';');
+            string login = credits[0];
 
-            comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
-            string password = comunicator.ReadResponse(stream);
+            //comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
+            string password = credits[1];
+            int permission = Int32.Parse(credits[2]);
             while (!CheckPassword(password))
             {
                 comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
-                password = comunicator.ReadResponse(stream);
+                var credentials2 = comunicator.ReadResponse(stream);
+                if (!credentials2.Equals("BCK"))
+                {
+                    var credits2 = credentials2.Split(';');
+                    login = credits2[0];
+                    password = credits2[1];
+                    permission = Int32.Parse(credits2[2]);
+                }
+                else
+                {
+                    login = "admin";
+                    break;
+                }
+               
             }
-
-            comunicator.SendMessage(stream, messageReader.getMessage("permissionMessage"));
-            int permission = Int32.Parse(comunicator.ReadResponse(stream));
+            //comunicator.SendMessage(stream, messageReader.getMessage("permissionMessage"));
+           
             try
             {
                 userHandler.AddNewUser(login, password, permission);
+                comunicator.SendMessage(stream, "ACK");
             }
             catch
             {
@@ -135,17 +152,19 @@ namespace TcpServerLibrary
 
         private void RemoveUser(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("removeMessage"));
+            //comunicator.SendMessage(stream, messageReader.getMessage("removeMessage"));
             string login = comunicator.ReadResponse(stream);
 
             try
             {
                 userHandler.RemoveUser(login);
+                comunicator.SendMessage(stream, "ACK");
             }
             catch
             {
                 comunicator.SendMessage(stream, messageReader.getMessage("noLoginMessage"));
             }
+            
         }
 
         private void StartGame(NetworkStream stream)
