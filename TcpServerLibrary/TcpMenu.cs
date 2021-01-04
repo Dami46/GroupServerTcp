@@ -22,19 +22,25 @@ namespace TcpServerLibrary
 
         public void ShowMenu(NetworkStream stream)
         {
-            do
+
+            if (loggedUser.permission == 0)
             {
-                if (loggedUser.permission == 0)
+                comunicator.SendMessage(stream, "ADM");
+                do
                 {
-                    comunicator.SendMessage(stream, "ADM");
                     AdminMenu(stream);
-                }
-                else if (loggedUser.permission == 1)
+                } while (Continue_session == true);
+            }
+            else if (loggedUser.permission == 1)
+            {
+                comunicator.SendMessage(stream, "USR");
+                do
                 {
-                    comunicator.SendMessage(stream, "USR");
                     UserMenu(stream);
-                }
-            } while (Continue_session == true);
+                    
+                } while (Continue_session == true);
+            }
+
         }
 
         public bool LoginMenu(NetworkStream stream)
@@ -83,7 +89,7 @@ namespace TcpServerLibrary
         {
             //comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
             var credentials = comunicator.ReadResponse(stream);
-          
+
             var credits = credentials.Split(';');
             string login = credits[0];
 
@@ -106,10 +112,10 @@ namespace TcpServerLibrary
                     login = "admin";
                     break;
                 }
-               
+
             }
             //comunicator.SendMessage(stream, messageReader.getMessage("permissionMessage"));
-           
+
             try
             {
                 userHandler.AddNewUser(login, password, permission);
@@ -164,7 +170,7 @@ namespace TcpServerLibrary
             {
                 comunicator.SendMessage(stream, messageReader.getMessage("noLoginMessage"));
             }
-            
+
         }
 
         private void StartGame(NetworkStream stream)
@@ -181,11 +187,11 @@ namespace TcpServerLibrary
         private void ChangePassword(NetworkStream stream)
         {
             LoginUser(stream);
-            comunicator.SendMessage(stream, messageReader.getMessage("newPasswordMessage"));
+            //comunicator.SendMessage(stream, messageReader.getMessage("newPasswordMessage"));
             string password = comunicator.ReadResponse(stream);
             while (!CheckPassword(password))
             {
-                comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
+                comunicator.SendMessage(stream, "BAD");
                 password = comunicator.ReadResponse(stream);
             }
             userHandler.RemoveUser(loggedUser.login);

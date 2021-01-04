@@ -50,7 +50,7 @@ namespace ClientGui
 
         private void logoutButton_Click(object sender, EventArgs e)
         {
-            comunicator.SendMessage(stream, "DIS");
+            comunicator.SendMessage(stream, "4");
             Hide();
             LoginWindow loginWindow = new LoginWindow(client);
             loginWindow.ShowDialog();
