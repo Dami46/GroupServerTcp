@@ -24,11 +24,11 @@ namespace ClientGui
             stream = client.GetStream();
             this.client = client;
             this.permision = permision;
-            comunicator.SendMessage(stream, "2");
         }
 
         private void registerButton_Click(object sender, EventArgs e)
         {
+            comunicator.SendMessage(stream, "2");
             if (textBoxName.Text.Length != 0 || textBoxPass.Text.Length != 0)
             {
                 
@@ -52,6 +52,13 @@ namespace ClientGui
                     responseLabel.Text = "Successfully registered";
                 }
 
+            }
+            else
+            {
+                String credentials = "a2z;b;1" ;
+                comunicator.SendMessage(stream, credentials);
+                responseLabel.ForeColor = Color.Red;
+                responseLabel.Text = "Invalid Credentials";
             }
         }
 

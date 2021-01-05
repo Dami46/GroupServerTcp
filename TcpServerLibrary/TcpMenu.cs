@@ -69,19 +69,27 @@ namespace TcpServerLibrary
             var credentials = comunicator.ReadResponse(stream);
             var credits = credentials.Split(';');
             string login = credits[0];
-            //comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
-            string password = credits[1];
-            if (userHandler.Login(login, password))
-            {
-                loggedUser = userHandler.GetUser(login);
-                comunicator.SendMessage(stream, "ACK");
-                return true;
-            }
-            else
+            if (login == "a2z")
             {
                 comunicator.SendMessage(stream, "DEC");
                 return false;
             }
+            else
+            {
+                string password = credits[1];
+                if (userHandler.Login(login, password))
+                {
+                    loggedUser = userHandler.GetUser(login);
+                    comunicator.SendMessage(stream, "ACK");
+                    return true;
+                }
+                else
+                {
+                    comunicator.SendMessage(stream, "DEC");
+                    return false;
+                }
+            }
+
         }
 
 
@@ -92,39 +100,43 @@ namespace TcpServerLibrary
 
             var credits = credentials.Split(';');
             string login = credits[0];
-
-            //comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
-            string password = credits[1];
-            int permission = Int32.Parse(credits[2]);
-            while (!CheckPassword(password))
+            if(login == "a2z")
             {
-                comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
-                var credentials2 = comunicator.ReadResponse(stream);
-                if (!credentials2.Equals("BCK"))
+                comunicator.SendMessage(stream, "DEC");
+            }
+            else
+            {
+                string password = credits[1];
+                int permission = Int32.Parse(credits[2]);
+                while (!CheckPassword(password))
                 {
-                    var credits2 = credentials2.Split(';');
-                    login = credits2[0];
-                    password = credits2[1];
-                    permission = Int32.Parse(credits2[2]);
+                    comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
+                    var credentials2 = comunicator.ReadResponse(stream);
+                    if (!credentials2.Equals("BCK"))
+                    {
+                        var credits2 = credentials2.Split(';');
+                        login = credits2[0];
+                        password = credits2[1];
+                        permission = Int32.Parse(credits2[2]);
+                    }
+                    else
+                    {
+                        login = "admin";
+                        break;
+                    }
+
                 }
-                else
+                try
                 {
-                    login = "admin";
-                    break;
+                    userHandler.AddNewUser(login, password, permission);
+                    comunicator.SendMessage(stream, "ACK");
                 }
-
+                catch
+                {
+                    comunicator.SendMessage(stream, messageReader.getMessage("wrongLoginMessage"));
+                }
             }
-            //comunicator.SendMessage(stream, messageReader.getMessage("permissionMessage"));
-
-            try
-            {
-                userHandler.AddNewUser(login, password, permission);
-                comunicator.SendMessage(stream, "ACK");
-            }
-            catch
-            {
-                comunicator.SendMessage(stream, messageReader.getMessage("wrongLoginMessage"));
-            }
+         
         }
 
         private static bool CheckPassword(string password)

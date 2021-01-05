@@ -54,22 +54,24 @@ namespace ClientGui
                     if (response.Equals("ADM"))
                     {
                         Hide();
-                        InteractionAdminWindow adminWindow = new InteractionAdminWindow(client,0);
+                        InteractionAdminWindow adminWindow = new InteractionAdminWindow(client, 0);
                         adminWindow.ShowDialog();
                     }
                     else
                     {
                         Hide();
-                        InteractionWindow userWindow = new InteractionWindow(client,1);
+                        InteractionWindow userWindow = new InteractionWindow(client, 1);
                         userWindow.ShowDialog();
                     }
                 }
 
-            } 
+            }
             else
             {
-               responseLabel.ForeColor = Color.Red;
-               responseLabel.Text = "Invalid Credentials"; 
+                String credentials = "a1z ;a1z";
+                comunicator.SendMessage(stream, credentials);
+                responseLabel.ForeColor = Color.Red;
+                responseLabel.Text = "Invalid Credentials";
             }
 
         }
