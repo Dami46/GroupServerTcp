@@ -24,7 +24,6 @@ namespace ClientGui
             stream = client.GetStream();
             this.client = client;
             this.permision = permision;
-            comunicator.SendMessage(stream, "3");
         }
 
         private void backButton_Click(object sender, EventArgs e)
@@ -36,6 +35,7 @@ namespace ClientGui
 
         private void removeButton_Click(object sender, EventArgs e)
         {
+            comunicator.SendMessage(stream, "3");
             String login = textBoxName.Text;
             comunicator.SendMessage(stream, login);
 

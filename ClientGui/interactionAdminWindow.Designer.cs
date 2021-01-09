@@ -44,7 +44,7 @@
             this.panel1.Controls.Add(this.remButton);
             this.panel1.Controls.Add(this.registerButton);
             this.panel1.Controls.Add(this.beginButton);
-            this.panel1.Location = new System.Drawing.Point(215, 81);
+            this.panel1.Location = new System.Drawing.Point(164, 76);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(170, 164);
@@ -109,7 +109,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 366);
+            this.ClientSize = new System.Drawing.Size(512, 324);
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "InteractionAdminWindow";

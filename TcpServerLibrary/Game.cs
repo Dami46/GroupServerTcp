@@ -102,8 +102,22 @@ namespace ServerLibrary
             string hotOrNot = "";
             if (guessedValue < numberValue + 10 && guessedValue > numberValue - 10)
             {
-                hotOrNot = " Goroco";
-                counter = 0;
+                hotOrNot = " Goraco";
+                if (guessedValue > numberValue && counter == 3)
+                {
+                    if (guessedValue - numberValue < tmpValue - numberValue)
+                    {
+                        hotOrNot = " Gorecej";
+                    }
+                }
+                else if (guessedValue < numberValue && counter == 3)
+                {
+                    if (guessedValue - numberValue > tmpValue - numberValue)
+                    {
+                        hotOrNot = " Gorecej";
+                    }
+                }
+                counter = 3;
             }
             else if (guessedValue < numberValue + 25 && guessedValue > numberValue - 25)
             {
@@ -128,7 +142,21 @@ namespace ServerLibrary
             else if (guessedValue < numberValue + 40 && guessedValue > numberValue - 40)
             {
                 hotOrNot = " Zimno";
-                counter = 0;
+                if (guessedValue > numberValue && counter == 2)
+                {
+                    if (guessedValue - numberValue > tmpValue - numberValue)
+                    {
+                        hotOrNot = " Zimniej";
+                    }
+                }
+                else if (guessedValue < numberValue && counter == 2)
+                {
+                    if (guessedValue - numberValue < tmpValue - numberValue)
+                    {
+                        hotOrNot = " Zimniej";
+                    }
+                }
+                counter = 2;
             }
             else
             {
