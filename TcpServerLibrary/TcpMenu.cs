@@ -65,7 +65,6 @@ namespace TcpServerLibrary
 
         private bool LoginUser(NetworkStream stream)
         {
-            // comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
             var credentials = comunicator.ReadResponse(stream);
             var credits = credentials.Split(';');
             string login = credits[0];
@@ -95,7 +94,6 @@ namespace TcpServerLibrary
 
         private void RegiserUser(NetworkStream stream)
         {
-            //comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
             var credentials = comunicator.ReadResponse(stream);
 
             var credits = credentials.Split(';');
@@ -170,7 +168,6 @@ namespace TcpServerLibrary
 
         private void RemoveUser(NetworkStream stream)
         {
-            //comunicator.SendMessage(stream, messageReader.getMessage("removeMessage"));
             string login = comunicator.ReadResponse(stream);
 
             try
@@ -199,7 +196,6 @@ namespace TcpServerLibrary
         private void ChangePassword(NetworkStream stream)
         {
             LoginUser(stream);
-            //comunicator.SendMessage(stream, messageReader.getMessage("newPasswordMessage"));
             string password = comunicator.ReadResponse(stream);
             while (!CheckPassword(password))
             {
@@ -212,7 +208,6 @@ namespace TcpServerLibrary
 
         public void UserMenu(NetworkStream stream)
         {
-            //comunicator.SendMessage(stream, messageReader.getMessage("userMenu"));
             var msg = comunicator.ReadResponse(stream);
             switch (msg)
             {
@@ -242,7 +237,6 @@ namespace TcpServerLibrary
 
         public void AdminMenu(NetworkStream stream)
         {
-            //comunicator.SendMessage(stream, messageReader.getMessage("adminMenu"));
             var msg = comunicator.ReadResponse(stream);
             switch (msg)
             {

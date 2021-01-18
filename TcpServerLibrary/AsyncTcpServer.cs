@@ -46,7 +46,6 @@ namespace ServerLibrary
             {
                 while (menu.LoginMenu(stream))
                 {
-                    //currentUser = menu.LoggedUser;
                     menu.ShowMenu(stream);
                 }
             }

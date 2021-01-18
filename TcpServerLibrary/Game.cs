@@ -33,7 +33,7 @@ namespace ServerLibrary
             int nextGame = 1;
             Game game = new Game();
             Console.WriteLine("Number to guess: " + game.numberValue);
-            // comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
+
             while (nextGame == 1)
             {
 
@@ -62,7 +62,6 @@ namespace ServerLibrary
                     user.score = user.score + game.score;
                     game.score = 100;
 
-                    //comunicator.SendMessage(stream, messageReader.getMessage("continueMessage"));
                     var continueGame = comunicator.ReadResponse(stream);
 
                     nextGame = Int32.Parse(continueGame);
