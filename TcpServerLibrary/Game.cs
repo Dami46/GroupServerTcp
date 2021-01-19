@@ -33,7 +33,7 @@ namespace ServerLibrary
             int nextGame = 1;
             Game game = new Game();
             Console.WriteLine("Number to guess: " + game.numberValue);
-            comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
+
             while (nextGame == 1)
             {
 
@@ -51,7 +51,7 @@ namespace ServerLibrary
                     guessedValInt = 102;
                 }
 
-                if (guessedValInt > 100 || guessedValInt < 0)
+                if ((guessedValInt > 100 || guessedValInt < 0) && guessedValInt != 10001)
                 {
                     comunicator.SendMessage(stream, messageReader.getMessage("badValueMessage"));
                 }
@@ -62,13 +62,14 @@ namespace ServerLibrary
                     user.score = user.score + game.score;
                     game.score = 100;
 
-                    //comunicator.SendMessage(stream, messageReader.getMessage("continueMessage"));
                     var continueGame = comunicator.ReadResponse(stream);
 
                     nextGame = Int32.Parse(continueGame);
                     if (nextGame == 0)
                     {
                         comunicator.SendMessage(stream, messageReader.getMessage("endMessage"));
+                    }
+                    else if (nextGame == 10001) {
                     }
                     else
                     {
@@ -77,6 +78,10 @@ namespace ServerLibrary
                         comunicator.SendMessage(stream, messageReader.getMessage("guessMessage"));
 
                     }
+                }
+                else if (guessedValInt == 10001)
+                {
+                    nextGame = 0;
                 }
                 else
                 {
@@ -88,7 +93,6 @@ namespace ServerLibrary
 
                 game.score = game.score - 3;
 
-
             }
         }
 
@@ -97,8 +101,22 @@ namespace ServerLibrary
             string hotOrNot = "";
             if (guessedValue < numberValue + 10 && guessedValue > numberValue - 10)
             {
-                hotOrNot = " Goroco";
-                counter = 0;
+                hotOrNot = " Goraco";
+                if (guessedValue > numberValue && counter == 3)
+                {
+                    if (guessedValue - numberValue < tmpValue - numberValue)
+                    {
+                        hotOrNot = " Gorecej";
+                    }
+                }
+                else if (guessedValue < numberValue && counter == 3)
+                {
+                    if (guessedValue - numberValue > tmpValue - numberValue)
+                    {
+                        hotOrNot = " Gorecej";
+                    }
+                }
+                counter = 3;
             }
             else if (guessedValue < numberValue + 25 && guessedValue > numberValue - 25)
             {
@@ -123,7 +141,21 @@ namespace ServerLibrary
             else if (guessedValue < numberValue + 40 && guessedValue > numberValue - 40)
             {
                 hotOrNot = " Zimno";
-                counter = 0;
+                if (guessedValue > numberValue && counter == 2)
+                {
+                    if (guessedValue - numberValue > tmpValue - numberValue)
+                    {
+                        hotOrNot = " Zimniej";
+                    }
+                }
+                else if (guessedValue < numberValue && counter == 2)
+                {
+                    if (guessedValue - numberValue < tmpValue - numberValue)
+                    {
+                        hotOrNot = " Zimniej";
+                    }
+                }
+                counter = 2;
             }
             else
             {

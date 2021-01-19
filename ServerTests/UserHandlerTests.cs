@@ -37,7 +37,15 @@ namespace ServerLibrary.Tests
         {
             try
             {
-                userHandler.AddNewUser(new User("adduser", "withlogin", 1));
+                string login = "adduser";
+                string password = "withlogin";
+                int i = 0;
+                while(userHandler.Login(login, password))
+                {
+                    login = "adduser" + i;
+                    i++;
+                }
+                userHandler.AddNewUser(new User(login, password, 1));
             }
             catch (AssertFailedException)
             {
@@ -48,7 +56,15 @@ namespace ServerLibrary.Tests
         [TestMethod()]
         public void AddNewUserTest1()
         {
-            userHandler.AddNewUser("adduser", "withuser", 1);
+            string login = "adduser";
+            string password = "withlogin";
+            int i = 0;
+            while (userHandler.Login(login, password))
+            {
+                login = "adduser" + i;
+                i++;
+            }
+            userHandler.AddNewUser(login, password, 1);
         }
 
         [TestMethod()]

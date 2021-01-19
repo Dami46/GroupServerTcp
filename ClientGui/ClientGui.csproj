@@ -46,34 +46,70 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="interactionAdminWindow.cs">
+    <Compile Include="ChangePasswordWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="interactionAdminWindow.Designer.cs">
-      <DependentUpon>interactionAdminWindow.cs</DependentUpon>
+    <Compile Include="ChangePasswordWindow.Designer.cs">
+      <DependentUpon>ChangePasswordWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="interactionWindow.cs">
+    <Compile Include="GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="interactionWindow.Designer.cs">
-      <DependentUpon>interactionWindow.cs</DependentUpon>
+    <Compile Include="GameWindow.Designer.cs">
+      <DependentUpon>GameWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="loginWindow.cs">
+    <Compile Include="InteractionAdminWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="loginWindow.Designer.cs">
-      <DependentUpon>loginWindow.cs</DependentUpon>
+    <Compile Include="InteractionAdminWindow.Designer.cs">
+      <DependentUpon>InteractionAdminWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InteractionWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InteractionWindow.Designer.cs">
+      <DependentUpon>InteractionWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginWindow.Designer.cs">
+      <DependentUpon>LoginWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="interactionAdminWindow.resx">
-      <DependentUpon>interactionAdminWindow.cs</DependentUpon>
+    <Compile Include="RankingWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RankingWindow.Designer.cs">
+      <DependentUpon>RankingWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RegisterWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegisterWindow.Designer.cs">
+      <DependentUpon>RegisterWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RemoveUserWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RemoveUserWindow.Designer.cs">
+      <DependentUpon>RemoveUserWindow.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ChangePasswordWindow.resx">
+      <DependentUpon>ChangePasswordWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="interactionWindow.resx">
-      <DependentUpon>interactionWindow.cs</DependentUpon>
+    <EmbeddedResource Include="GameWindow.resx">
+      <DependentUpon>GameWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="loginWindow.resx">
-      <DependentUpon>loginWindow.cs</DependentUpon>
+    <EmbeddedResource Include="InteractionAdminWindow.resx">
+      <DependentUpon>InteractionAdminWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InteractionWindow.resx">
+      <DependentUpon>InteractionWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginWindow.resx">
+      <DependentUpon>LoginWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -84,6 +120,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RankingWindow.resx">
+      <DependentUpon>RankingWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegisterWindow.resx">
+      <DependentUpon>RegisterWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RemoveUserWindow.resx">
+      <DependentUpon>RemoveUserWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -96,6 +141,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TcpServerLibrary\TcpServerLibrary.csproj">
+      <Project>{32caaa83-012c-41df-b832-8b99bbec6066}</Project>
+      <Name>TcpServerLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

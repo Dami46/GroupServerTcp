@@ -13,32 +13,32 @@ using TcpServerLibrary;
 
 namespace ClientGui
 {
-    public partial class LoginWindow : Form
+    public partial class ChangePasswordWindow : Form
     {
         TcpClient client;
         NetworkStream stream;
-        public LoginWindow(TcpClient client)
+        int permision;
+        public ChangePasswordWindow(TcpClient client, int permision)
         {
             InitializeComponent();
             stream = client.GetStream();
             this.client = client;
+            this.permision = permision;
         }
 
-        //register button
-        private void registerButton_Click(object sender, EventArgs e)
+        private void backButton_Click(object sender, EventArgs e)
         {
             Hide();
-            RegisterWindow registerWindow = new RegisterWindow(client, 2);
-            registerWindow.ShowDialog();
+            InteractionWindow interactionWindow = new InteractionWindow(client, permision);
+            interactionWindow.ShowDialog();
         }
 
-        //login button
-        private void loginButton_Click(object sender, EventArgs e)
+        private void registerButton_Click(object sender, EventArgs e)
         {
             ClientComunicator comunicator = new ClientComunicator();
-            comunicator.SendMessage(stream, "1");
+            comunicator.SendMessage(stream, "3");
 
-            if (textBoxName.Text.Length != 0 || textBoxPass.Text.Length != 0)
+            if (textBoxName.Text.Length != 0 || textBoxPass.Text.Length != 0 || newPasswordBox.Text.Length != 0)
             {
                 String credentials = textBoxName.Text + ";" + textBoxPass.Text;
                 comunicator.SendMessage(stream, credentials);
@@ -50,30 +50,29 @@ namespace ClientGui
                 }
                 else
                 {
+               
+                    credentials = newPasswordBox.Text;
+                    comunicator.SendMessage(stream, credentials);
+
                     response = comunicator.ReadResponse(stream);
-                    if (response.Equals("ADM"))
+                    if(response == "BAD")
                     {
-                        Hide();
-                        InteractionAdminWindow adminWindow = new InteractionAdminWindow(client, 0);
-                        adminWindow.ShowDialog();
+                        responseLabel.ForeColor = Color.Red;
+                        responseLabel.Text = "Bad new password";
                     }
                     else
                     {
-                        Hide();
-                        InteractionWindow userWindow = new InteractionWindow(client, 1);
-                        userWindow.ShowDialog();
+
                     }
+
                 }
 
             }
             else
             {
-                String credentials = "a1z ;a1z";
-                comunicator.SendMessage(stream, credentials);
                 responseLabel.ForeColor = Color.Red;
                 responseLabel.Text = "Invalid Credentials";
             }
-
         }
 
     }

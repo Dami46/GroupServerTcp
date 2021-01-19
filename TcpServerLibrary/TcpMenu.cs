@@ -8,7 +8,7 @@ using ServerLibrary;
 
 namespace TcpServerLibrary
 {
-    class Menu
+    public class TcpMenu
     {
         protected User loggedUser;
         private static UserHandler userHandler = new UserHandler();
@@ -22,22 +22,30 @@ namespace TcpServerLibrary
 
         public void ShowMenu(NetworkStream stream)
         {
-            do
+
+            if (loggedUser.permission == 0)
             {
-                if (loggedUser.permission == 0)
+                comunicator.SendMessage(stream, "ADM");
+                do
                 {
                     AdminMenu(stream);
-                }
-                else if (loggedUser.permission == 1)
+                } while (Continue_session == true);
+            }
+            else if (loggedUser.permission == 1)
+            {
+                comunicator.SendMessage(stream, "USR");
+                do
                 {
                     UserMenu(stream);
-                }
-            } while (Continue_session == true);
+                    
+                } while (Continue_session == true);
+            }
+
         }
 
         public bool LoginMenu(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("loginMenu"));
+            //comunicator.SendMessage(stream, messageReader.getMessage("loginMenu"));
             var msg = comunicator.ReadResponse(stream);
             switch (msg)
             {
@@ -57,43 +65,76 @@ namespace TcpServerLibrary
 
         private bool LoginUser(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
-            string login = comunicator.ReadResponse(stream);
-
-            comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
-            string password = comunicator.ReadResponse(stream);
-            if (userHandler.Login(login, password))
+            var credentials = comunicator.ReadResponse(stream);
+            var credits = credentials.Split(';');
+            string login = credits[0];
+            if (login == "a2z")
             {
-                loggedUser = userHandler.GetUser(login);
-                return true;
+                comunicator.SendMessage(stream, "DEC");
+                return false;
             }
             else
-                return false;
+            {
+                string password = credits[1];
+                if (userHandler.Login(login, password))
+                {
+                    loggedUser = userHandler.GetUser(login);
+                    comunicator.SendMessage(stream, "ACK");
+                    return true;
+                }
+                else
+                {
+                    comunicator.SendMessage(stream, "DEC");
+                    return false;
+                }
+            }
+
         }
+
 
         private void RegiserUser(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("loginMessage"));
-            string login = comunicator.ReadResponse(stream);
+            var credentials = comunicator.ReadResponse(stream);
 
-            comunicator.SendMessage(stream, messageReader.getMessage("passwordMessage"));
-            string password = comunicator.ReadResponse(stream);
-            while (!CheckPassword(password))
+            var credits = credentials.Split(';');
+            string login = credits[0];
+            if(login == "a2z")
             {
-                comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
-                password = comunicator.ReadResponse(stream);
+                comunicator.SendMessage(stream, "DEC");
             }
+            else
+            {
+                string password = credits[1];
+                int permission = Int32.Parse(credits[2]);
+                while (!CheckPassword(password))
+                {
+                    comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
+                    var credentials2 = comunicator.ReadResponse(stream);
+                    if (!credentials2.Equals("BCK"))
+                    {
+                        var credits2 = credentials2.Split(';');
+                        login = credits2[0];
+                        password = credits2[1];
+                        permission = Int32.Parse(credits2[2]);
+                    }
+                    else
+                    {
+                        login = "admin";
+                        break;
+                    }
 
-            comunicator.SendMessage(stream, messageReader.getMessage("permissionMessage"));
-            int permission = Int32.Parse(comunicator.ReadResponse(stream));
-            try
-            {
-                userHandler.AddNewUser(login, password, permission);
+                }
+                try
+                {
+                    userHandler.AddNewUser(login, password, permission);
+                    comunicator.SendMessage(stream, "ACK");
+                }
+                catch
+                {
+                    comunicator.SendMessage(stream, messageReader.getMessage("wrongLoginMessage"));
+                }
             }
-            catch
-            {
-                comunicator.SendMessage(stream, messageReader.getMessage("wrongLoginMessage"));
-            }
+         
         }
 
         private static bool CheckPassword(string password)
@@ -102,7 +143,7 @@ namespace TcpServerLibrary
             {
                 return false;
             }
-           
+
             if (password.Contains(" "))
             {
                 return false;
@@ -127,17 +168,18 @@ namespace TcpServerLibrary
 
         private void RemoveUser(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("removeMessage"));
             string login = comunicator.ReadResponse(stream);
 
             try
             {
                 userHandler.RemoveUser(login);
+                comunicator.SendMessage(stream, "ACK");
             }
             catch
             {
                 comunicator.SendMessage(stream, messageReader.getMessage("noLoginMessage"));
             }
+
         }
 
         private void StartGame(NetworkStream stream)
@@ -154,11 +196,10 @@ namespace TcpServerLibrary
         private void ChangePassword(NetworkStream stream)
         {
             LoginUser(stream);
-            comunicator.SendMessage(stream, messageReader.getMessage("newPasswordMessage"));
             string password = comunicator.ReadResponse(stream);
             while (!CheckPassword(password))
             {
-                comunicator.SendMessage(stream, messageReader.getMessage("badPasswordMessage"));
+                comunicator.SendMessage(stream, "BAD");
                 password = comunicator.ReadResponse(stream);
             }
             userHandler.RemoveUser(loggedUser.login);
@@ -167,7 +208,6 @@ namespace TcpServerLibrary
 
         public void UserMenu(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("userMenu"));
             var msg = comunicator.ReadResponse(stream);
             switch (msg)
             {
@@ -197,7 +237,6 @@ namespace TcpServerLibrary
 
         public void AdminMenu(NetworkStream stream)
         {
-            comunicator.SendMessage(stream, messageReader.getMessage("adminMenu"));
             var msg = comunicator.ReadResponse(stream);
             switch (msg)
             {
